@@ -16,7 +16,7 @@ import java.io.IOException;
 @Configuration
 public class FirebaseConfig {
 
-    private static final String APP_NAME = "dm111";
+    private static final String APP_NAME = "dm111-promos";
 
     @Value("classpath:service-accounts.json")
     Resource resource;
