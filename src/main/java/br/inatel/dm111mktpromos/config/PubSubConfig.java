@@ -13,7 +13,6 @@ import java.io.IOException;
 @Configuration
 public class PubSubConfig {
 
-    /*
     @Value("${dm111.project-id}")
     private String projectId;
 
@@ -32,5 +31,5 @@ public class PubSubConfig {
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
     }
-     */
+
 }
