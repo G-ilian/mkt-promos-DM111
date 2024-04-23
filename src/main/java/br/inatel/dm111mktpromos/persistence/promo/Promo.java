@@ -1,5 +1,7 @@
 package br.inatel.dm111mktpromos.persistence.promo;
 
+import br.inatel.dm111mktpromos.api.promo.ProductRequest;
+
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +19,10 @@ public class Promo {
     private String name;
     private Date startingDate;
     private Date expirationDate;
-    private List<String> products;
+    private List<ProductRequest> products;
 
 
-    public Promo(String id, String name, Date startingDate, Date expirationDate, List<String> products) {
+    public Promo(String id, String name, Date startingDate, Date expirationDate, List<ProductRequest> products) {
         this.id = id;
         this.name = name;
         this.startingDate = startingDate;
@@ -43,7 +45,7 @@ public class Promo {
         return expirationDate;
     }
 
-    public List<String> getProducts() {
+    public List<ProductRequest> getProducts() {
         return products;
     }
 
@@ -59,7 +61,7 @@ public class Promo {
         this.expirationDate = expirationDate;
     }
 
-    public void setProducts(List<String> products) {
+    public void setProducts(List<ProductRequest> products) {
         this.products = products;
     }
 
