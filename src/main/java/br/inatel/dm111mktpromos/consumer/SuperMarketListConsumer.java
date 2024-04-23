@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class SuperMarketListConsumer {
 
-    /*
     private final Logger log = LoggerFactory.getLogger(SuperMarketListConsumer.class);
 
     private final ObjectMapper objectMapper;
@@ -57,14 +56,6 @@ public class SuperMarketListConsumer {
         subscriber.startAsync().awaitRunning();
         log.info("Listening the messages from the supermarket list topic...");
 
-//        try {
-//            // Stop messaging consumption gracefully
-//            subscriber.awaitTerminated(30, TimeUnit.SECONDS);
-//        } catch (TimeoutException e) {
-//            // Force stop messaging consumption
-//            subscriber.stopAsync();
-//        }
     }
 
-     */
 }
