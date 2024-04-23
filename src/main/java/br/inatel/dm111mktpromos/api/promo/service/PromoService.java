@@ -7,12 +7,12 @@ import br.inatel.dm111mktpromos.core.ApiException;
 import br.inatel.dm111mktpromos.core.AppErrorCode;
 import br.inatel.dm111mktpromos.persistence.promo.Promo;
 import br.inatel.dm111mktpromos.persistence.promo.PromoRepository;
+import br.inatel.dm111mktpromos.persistence.user.UserFirebaseRepository;
 import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -24,19 +24,23 @@ public class PromoService {
 
     private final SuperMarketListConsumer splConsumer;
 
-    public PromoService(PromoRepository promoRepository, SuperMarketListConsumer splConsumer) {
+    private final UserFirebaseRepository userFirebaseRepository;
+
+    public PromoService(PromoRepository promoRepository, SuperMarketListConsumer splConsumer, UserFirebaseRepository userFirebaseRepository) {
         this.promoRepository = promoRepository;
         this.splConsumer = splConsumer;
+        this.userFirebaseRepository = userFirebaseRepository;
     }
 
 
     public Promo createPromo(String userId,PromoRequest promoRequest) throws ApiException{
+        validateUser(userId);
 
-        // TO DO - Validate user Id
-        Promo promo = buildPromoObject(promoRequest);
+        var promo = buildPromoObject(promoRequest);
 
         var allProductsAvailable = true;
 
+        /*
         for (String productId:promo.getProducts()) {
             try{
                 allProductsAvailable=true;
@@ -48,6 +52,8 @@ public class PromoService {
             }
             
         }
+
+         */
 
         if(allProductsAvailable){
             promoRepository.save(promo);
@@ -143,13 +149,15 @@ public class PromoService {
 
         var allProductsAvailable = true;
 
+        /*
         for (String productId:promo.getProducts()) {
             // TO DO - Logic for consumer product repository
         }
+         */
 
         if(allProductsAvailable){
             promoRepository.update(promo);
-
+            return promo;
             // TO DO - LOGIC FOR PUBLISHER promo
         }else {
             throw new ApiException(AppErrorCode.PRODUCTS_NOT_FOUND);
@@ -189,9 +197,7 @@ public class PromoService {
 
     private Promo buildPromoObject(PromoRequest request){
         var id = UUID.randomUUID().toString();
-
         return new Promo(id, request.name(), request.startingDate(),request.expirationDate(),request.products());
-
     }
 
     private Promo retrievePromo(String promoId) throws ApiException{
@@ -203,9 +209,13 @@ public class PromoService {
 
     }
 
-    private void validateUser(String userId){
-        // TO DO - Consumer logic for user service, deployed into dm111 service
-
+    private void validateUser(String userId) throws ApiException {
+        try {
+            userFirebaseRepository.findById(userId)
+                    .orElseThrow(() -> new ApiException(AppErrorCode.USER_NOT_FOUND));
+        } catch (ExecutionException | InterruptedException e) {
+            throw new ApiException(AppErrorCode.USERS_QUERY_ERROR);
+        }
     }
 
 

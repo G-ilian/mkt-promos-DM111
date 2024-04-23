@@ -27,6 +27,6 @@ public record PromoRequest(
         String name,
         Date startingDate,
         Date expirationDate,
-        List<String> products
+        List<ProductRequest> products
 ) {
 }

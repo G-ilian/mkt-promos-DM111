@@ -37,17 +37,13 @@ public class PromoController {
     }
 
     @GetMapping("/promo/{id}")
-    public ResponseEntity<Optional<Promo>> getPromoById(@PathVariable("id") String promoId) throws ApiException {
-        var promo = service.getPromoById(promoId);
-
-        return ResponseEntity.ok(promo);
+    public Promo getPromoById(@PathVariable("id") String promoId) throws ApiException {
+        return service.getPromoById(promoId);
     }
 
     @GetMapping("/promo/users/{userId}")
-    public ResponseEntity<Optional<Promo>> getPromoByUserId(@PathVariable("userId") String userId) throws ApiException {
-        var promo = service.getPromoByUserId(userId);
-
-        return ResponseEntity.ok(promo);
+    public Promo getPromoByUserId(@PathVariable("userId") String userId) throws ApiException {
+        return service.getPromoByUserId(userId);
     }
 
     // Update operation
