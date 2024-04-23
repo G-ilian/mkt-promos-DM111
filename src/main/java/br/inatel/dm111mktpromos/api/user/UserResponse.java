@@ -1,4 +1,4 @@
-package br.inatel.dm111.api.user;
+package br.inatel.dm111mktpromos.api.user;
 
 //{
 //    "id": "",

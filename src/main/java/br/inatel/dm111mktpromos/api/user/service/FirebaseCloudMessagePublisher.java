@@ -1,6 +1,7 @@
-package br.inatel.dm111.api.user.service;
+package br.inatel.dm111mktpromos.api.user.service;
 
-import br.inatel.dm111.persistence.user.User;
+
+import br.inatel.dm111mktpromos.persistence.user.User;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;

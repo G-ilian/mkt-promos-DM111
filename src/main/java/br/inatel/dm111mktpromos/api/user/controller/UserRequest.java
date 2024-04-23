@@ -1,4 +1,4 @@
-package br.inatel.dm111.api.user.controller;
+package br.inatel.dm111mktpromos.api.user.controller;
 
 public record UserRequest(String name,
                           String email,

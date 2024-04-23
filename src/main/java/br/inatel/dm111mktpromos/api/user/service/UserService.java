@@ -1,21 +1,17 @@
-package br.inatel.dm111.api.user.service;
+package br.inatel.dm111mktpromos.api.user.service;
 
-import br.inatel.dm111.api.core.ApiException;
-import br.inatel.dm111.api.core.AppErrorCode;
-import br.inatel.dm111.api.core.PasswordCrypto;
-import br.inatel.dm111.api.user.UserResponse;
-import br.inatel.dm111.api.user.controller.UserController;
-import br.inatel.dm111.api.user.controller.UserRequest;
-import br.inatel.dm111.persistence.user.User;
-import br.inatel.dm111.persistence.user.UserFirebaseRepository;
+
+import br.inatel.dm111mktpromos.api.user.UserResponse;
+import br.inatel.dm111mktpromos.api.user.controller.UserRequest;
+import br.inatel.dm111mktpromos.core.ApiException;
+import br.inatel.dm111mktpromos.core.AppErrorCode;
+import br.inatel.dm111mktpromos.core.PasswordCrypto;
+import br.inatel.dm111mktpromos.persistence.user.User;
+import br.inatel.dm111mktpromos.persistence.user.UserFirebaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
