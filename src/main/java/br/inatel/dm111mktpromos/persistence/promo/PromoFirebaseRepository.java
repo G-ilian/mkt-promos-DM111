@@ -1,83 +1,125 @@
-package br.inatel.dm111mktpromos.persistence.promo;
+    package br.inatel.dm111mktpromos.persistence.promo;
 
-import com.google.cloud.firestore.Firestore;
-import org.springframework.stereotype.Component;
+    import br.inatel.dm111mktpromos.api.promo.ProductRequest;
+    import com.google.cloud.firestore.Firestore;
+    import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
+    import java.math.BigDecimal;
+    import java.util.*;
+    import java.util.concurrent.ExecutionException;
 
-@Component
-public class PromoFirebaseRepository implements PromoRepository{
+    @Component
+    public class PromoFirebaseRepository implements PromoRepository{
 
-    private static final String COLLECTION_NAME = "promotions";
-    private final Firestore firestore;
-
-
-    public PromoFirebaseRepository(Firestore firestore) {
-        this.firestore = firestore;
-    }
+        private static final String COLLECTION_NAME = "promotions";
+        private final Firestore firestore;
 
 
-    @Override
-    public void save(Promo promo) {
-        firestore.collection(COLLECTION_NAME).
-                document(promo.getId()).create(promo);
-    }
+        public PromoFirebaseRepository(Firestore firestore) {
+            this.firestore = firestore;
+        }
 
-    @Override
-    public List<Promo> findAllPromos() throws ExecutionException, InterruptedException {
-        List<Promo> promoList = new ArrayList<>();
 
-        var collection = firestore.collection(COLLECTION_NAME);
+        @Override
+        public void save(Promo promo) {
+            Map<String, Object> promoMap = new HashMap<>();
+            promoMap.put("id", promo.getId());
+            promoMap.put("name", promo.getName());
+            promoMap.put("startingDate", promo.getStartingDate());
+            promoMap.put("expirationDate", promo.getExpirationDate());
 
-        var documents = collection.listDocuments();
+            List<Map<String, Object>> productsMap = new ArrayList<>();
+            for (ProductRequest product : promo.getProducts()) {
+                Map<String, Object> productMap = new HashMap<>();
+                System.out.println(product.product_id());
+                productMap.put("product_id", product.product_id());
+                productMap.put("discount", product.discount());
+                productsMap.add(productMap);
+            }
+            promoMap.put("products", productsMap);
 
-        for (var documentRef : documents) {
+            firestore.collection(COLLECTION_NAME)
+                    .document(promo.getId())
+                    .set(promoMap);
+        }
 
-            var document = documentRef.get().get();
-            if (document.exists()) {
-                var promo = document.toObject(Promo.class);
-                promoList.add(promo);
+        @Override
+        public List<Promo> findAllPromos() throws ExecutionException, InterruptedException {
+            List<Promo> promoList = new ArrayList<>();
+
+            var collection = firestore.collection(COLLECTION_NAME);
+
+            var documents = collection.listDocuments();
+
+            for (var documentRef : documents) {
+                var document = documentRef.get().get();
+                if (document.exists()) {
+                    Map<String, Object> promoMap = document.getData();
+                    String id = document.getId();
+                    String name = (String) promoMap.get("name");
+                    String startingDate = (String) promoMap.get("startingDate");
+                    String expirationDate = (String) promoMap.get("expirationDate");
+
+                    // Convertendo a lista de produtos do mapa para uma lista de ProductRequest
+                    List<ProductRequest> products = new ArrayList<>();
+                    List<Map<String, Object>> productsMap = (List<Map<String, Object>>) promoMap.get("products");
+                    for (Map<String, Object> productMap : productsMap) {
+                        String productId = (String) productMap.get("product_id");
+                        BigDecimal discount = new BigDecimal(String.valueOf(productMap.get("discount")));
+                        products.add(new ProductRequest(productId, discount));
+                    }
+
+                    // Criando o objeto Promo e adicionando à lista
+                    Promo promo = new Promo(id, name, startingDate, expirationDate, products);
+                    promoList.add(promo);
+                }
+            }
+
+            return promoList;
+        }
+
+        @Override
+        public Promo findAllByPromoId(String promoId) throws ExecutionException, InterruptedException {
+            var documentSnapshot = firestore.collection(COLLECTION_NAME)
+                    .document(promoId)
+                    .get()
+                    .get();
+
+            if (documentSnapshot.exists()) {
+                Map<String, Object> promoMap = documentSnapshot.getData();
+
+                // Convertendo a lista de produtos do mapa para uma lista de ProductRequest
+                List<ProductRequest> products = new ArrayList<>();
+                List<Map<String, Object>> productsMap = (List<Map<String, Object>>) promoMap.get("products");
+                for (Map<String, Object> productMap : productsMap) {
+                    String productId = (String) productMap.get("product_id");
+
+                    // Convertendo o desconto de String para BigDecimal
+                    BigDecimal discount = new BigDecimal(String.valueOf(productMap.get("discount")));
+
+                    products.add(new ProductRequest(productId, discount));
+                }
+
+                // Criando um novo objeto Promo com os dados do mapa
+                return new Promo(
+                        (String) promoMap.get("id"),
+                        (String) promoMap.get("name"),
+                        (String) promoMap.get("startingDate"),
+                        (String) promoMap.get("expirationDate"),
+                        products
+                );
+            } else {
+                return null; // Retorna null se a promoção não existir
             }
         }
 
-        return promoList;
+        @Override
+        public void delete(String promoId) throws ExecutionException, InterruptedException {
+            firestore.collection(COLLECTION_NAME).document(promoId).delete().get();
+        }
 
+        @Override
+        public void update(Promo promo) {
+            save(promo);
+        }
     }
-
-    @Override
-    public Promo findAllByPromoId(String promoId) throws ExecutionException, InterruptedException {
-        var promo = firestore.collection(COLLECTION_NAME)
-                .document(promoId)
-                .get()
-                .get()
-                .toObject(Promo.class);
-
-
-        return promo;
-    }
-
-    @Override
-    public Promo findPromoByUserId(String userId) throws ExecutionException, InterruptedException {
-        var promo = firestore.collection(COLLECTION_NAME)
-                .document(userId)
-                .get()
-                .get()
-                .toObject(Promo.class);
-
-
-        return promo;
-    }
-
-    @Override
-    public void delete(String promoId) throws ExecutionException, InterruptedException {
-        firestore.collection(COLLECTION_NAME).document(promoId).delete().get();
-    }
-
-    @Override
-    public void update(Promo promo) {
-        save(promo);
-    }
-}
