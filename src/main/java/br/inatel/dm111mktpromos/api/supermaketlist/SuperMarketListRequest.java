@@ -1,7 +1,6 @@
-package br.inatel.dm111.api.supermaketlist;
+package br.inatel.dm111mktpromos.api.supermaketlist;
 
 import java.util.List;
-import java.util.Set;
 
 //{
 //    "name": "Materiais e limpeza",

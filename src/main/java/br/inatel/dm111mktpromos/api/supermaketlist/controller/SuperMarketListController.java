@@ -1,11 +1,10 @@
-package br.inatel.dm111.api.supermaketlist.controller;
+package br.inatel.dm111mktpromos.api.supermaketlist.controller;
 
-import br.inatel.dm111.api.core.ApiException;
-import br.inatel.dm111.api.product.ProductRequest;
-import br.inatel.dm111.api.supermaketlist.SuperMarketListRequest;
-import br.inatel.dm111.api.supermaketlist.service.SuperMarketListService;
-import br.inatel.dm111.persistence.product.Product;
-import br.inatel.dm111.persistence.supermarketlist.SuperMarketList;
+
+import br.inatel.dm111mktpromos.api.supermaketlist.SuperMarketListRequest;
+import br.inatel.dm111mktpromos.api.supermaketlist.service.SuperMarketListService;
+import br.inatel.dm111mktpromos.core.ApiException;
+import br.inatel.dm111mktpromos.persistence.supermarketlist.SuperMarketList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
