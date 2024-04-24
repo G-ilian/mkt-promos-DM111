@@ -1,4 +1,4 @@
-package br.inatel.dm111.persistence.product;
+package br.inatel.dm111mktpromos.persistence.product;
 
 import com.google.cloud.firestore.Firestore;
 import org.springframework.stereotype.Component;
