@@ -1,4 +1,4 @@
-package br.inatel.dm111.api.product;
+package br.inatel.dm111mktpromos.api.product;
 
 public record ProductRequest(String name,
                              String brand,

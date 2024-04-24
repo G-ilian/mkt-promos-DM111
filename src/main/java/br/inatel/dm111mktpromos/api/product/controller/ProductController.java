@@ -1,9 +1,10 @@
-package br.inatel.dm111.api.product.controller;
+package br.inatel.dm111mktpromos.api.product.controller;
 
-import br.inatel.dm111.api.core.ApiException;
-import br.inatel.dm111.api.product.ProductRequest;
-import br.inatel.dm111.api.product.service.ProductService;
-import br.inatel.dm111.persistence.product.Product;
+
+import br.inatel.dm111mktpromos.api.product.ProductRequest;
+import br.inatel.dm111mktpromos.api.product.service.ProductService;
+import br.inatel.dm111mktpromos.core.ApiException;
+import br.inatel.dm111mktpromos.persistence.product.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

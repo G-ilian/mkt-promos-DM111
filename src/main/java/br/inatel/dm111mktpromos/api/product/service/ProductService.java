@@ -1,10 +1,11 @@
-package br.inatel.dm111.api.product.service;
+package br.inatel.dm111mktpromos.api.product.service;
 
-import br.inatel.dm111.api.core.ApiException;
-import br.inatel.dm111.api.core.AppErrorCode;
-import br.inatel.dm111.api.product.ProductRequest;
-import br.inatel.dm111.persistence.product.Product;
-import br.inatel.dm111.persistence.product.ProductRepository;
+
+import br.inatel.dm111mktpromos.api.product.ProductRequest;
+import br.inatel.dm111mktpromos.core.ApiException;
+import br.inatel.dm111mktpromos.core.AppErrorCode;
+import br.inatel.dm111mktpromos.persistence.product.Product;
+import br.inatel.dm111mktpromos.persistence.product.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
