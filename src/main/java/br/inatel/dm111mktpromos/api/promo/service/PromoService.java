@@ -50,7 +50,7 @@ public class PromoService {
 
 
     public Promo createPromo(String userId,PromoRequest promoRequest) throws ApiException{
-        validateAdminUser(userId);
+        validateUser(userId);
 
         var promo = buildPromoObject(promoRequest);
 
@@ -123,6 +123,7 @@ public class PromoService {
         var cont =0;
         try{
             var promoProducts = promoRepository.findAllPromos();
+            var splProducts = splRepository.findAllByUserId(userId);
             var promoIds = new ArrayList<String>();
             for (Promo promo: promoProducts) {
                 if(validatePromoDate(promo.getStartingDate(),
@@ -133,9 +134,6 @@ public class PromoService {
                     promoData.put("name", promo.getName());
                     promoData.put("starting", promo.getStartingDate());
                     promoData.put("expiration", promo.getExpirationDate());
-
-                    var splProducts = splRepository.findAllByUserId(userId);
-
 
                     var promosForYou = selectedPromos(promo.getProducts(),splProducts);
 
@@ -161,7 +159,7 @@ public class PromoService {
 
 
     public Promo updatePromo(String userId,String promoId, PromoRequest promoRequest) throws ApiException {
-        validateAdminUser(userId);
+        validateUser(userId);
 
         var promo = retrievePromo(promoId);
 
@@ -197,7 +195,7 @@ public class PromoService {
 
 
     public void deletePromo(String userId,String promoId) throws ApiException {
-        validateAdminUser(userId);
+        validateUser(userId);
         try{
             var promo = retrievePromo(promoId);
 
@@ -237,14 +235,11 @@ public class PromoService {
 
     }
 
-    private void validateAdminUser(String userId) throws ApiException {
+    private void validateUser(String userId) throws ApiException {
         try {
             User user = userFirebaseRepository.findById(userId)
                     .orElseThrow(() -> new ApiException(AppErrorCode.USER_NOT_FOUND));
 
-            if(!(user.getRole().equalsIgnoreCase("ADMIN"))){
-                throw new ApiException(AppErrorCode.USER_UNAUTHORIZED_ACCESS);
-            }
         } catch (ExecutionException | InterruptedException e) {
             throw new ApiException(AppErrorCode.USERS_QUERY_ERROR);
         }

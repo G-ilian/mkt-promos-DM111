@@ -110,15 +110,21 @@ public class AuthInterceptor implements HandlerInterceptor {
                     if (!user.getRole().equalsIgnoreCase("ADMIN")) {
                         throw new ApiException(AppErrorCode.PRODUCTS_OPERATION_NOT_ALLOWED);
                     }
-            } else {
-                if (tokenPayload.uri().contains("/supermarketlist")) {
+            } else if (tokenPayload.uri().contains("/supermarketlist")){
                     // /dm111/users/blablabla/supermarketlist
                     var splitUri = tokenPayload.uri().split("/");
                     var pathUserId = splitUri[3];
                     if (!user.getId().equals(pathUserId)) {
                         throw new ApiException(AppErrorCode.SUPERMARKET_LIST_OPERATION_NOT_ALLOWED);
-                    }
                 }
+            }
+            else if(tokenPayload.uri().startsWith("/dm111/promo")){
+                if (tokenPayload.method().equals(HttpMethod.POST.name()) ||
+                        tokenPayload.method().equals(HttpMethod.PUT.name()) ||
+                        tokenPayload.method().equals(HttpMethod.DELETE.name()))
+                    if (!user.getRole().equalsIgnoreCase("ADMIN")) {
+                        throw new ApiException(AppErrorCode.PROMO_OPERATION_NOT_ALLOWED);
+                    }
             }
         } catch (ExecutionException | InterruptedException e) {
             throw new ApiException(AppErrorCode.INVALID_CREDENTIALS);

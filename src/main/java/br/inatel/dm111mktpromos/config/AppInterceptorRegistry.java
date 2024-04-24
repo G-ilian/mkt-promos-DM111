@@ -18,7 +18,9 @@ public class AppInterceptorRegistry implements WebMvcConfigurer {
             "/dm111/products**",
             "/dm111/products/**",
             "/dm111/users/*/supermarketlist**",
-            "/dm111/users/*/supermarketlist/**"
+            "/dm111/users/*/supermarketlist/**",
+            "/dm111/promo/*",
+            "/dm111/promo/*/users/*"
     );
 
     private final AuthInterceptor authInterceptor;
