@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -41,9 +42,9 @@ public class PromoController {
         return service.getPromoById(promoId);
     }
 
-    @GetMapping("/promo/users/{userId}")
-    public Promo getPromoByUserId(@PathVariable("userId") String userId) throws ApiException {
-        return service.getPromoByUserId(userId);
+        @GetMapping("/promo/users/{userId}")
+    public Map<String, Object> getPromoByUserId(@PathVariable("userId") String userId) throws ApiException {
+        return service.getPromoByUser(userId);
     }
 
     // Update operation

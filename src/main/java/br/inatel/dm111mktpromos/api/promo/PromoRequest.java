@@ -25,8 +25,8 @@ produto. ex: 5, 10, 15, 50, 70... limitado a 99%
 public record PromoRequest(
         String id,
         String name,
-        Date startingDate,
-        Date expirationDate,
+        String startingDate,
+        String expirationDate,
         List<ProductRequest> products
 ) {
 }
